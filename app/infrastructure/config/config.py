@@ -48,7 +48,7 @@ class EmailSettings(BaseSettings):
     SMTP_HOST: str = "smtp.timeweb.ru"
     SMTP_PORT: int = 465
     SMTP_USER: str = "admin@savebit.ru"
-    SMTP_PASS: str
+    SMTP_PASS: SecretStr = SecretStr("")
     EMAIL_FROM: str = "Savebit <admin@savebit.ru>"
     EMAIL_ENABLED: bool = True
 
