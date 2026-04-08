@@ -20,9 +20,9 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     configure_logging()
-    logger.info("vpn service started")
+    logger.info("savebit started")
     yield
-    logger.info("vpn service stopped")
+    logger.info("savebit stopped")
 
 
 def create_application() -> FastAPI:

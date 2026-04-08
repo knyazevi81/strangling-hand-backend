@@ -28,12 +28,6 @@ class SQLUserRepository(ModelBaseRepository[Users]):
         obj = result.scalar_one_or_none()
         return User.model_validate(obj) if obj else None
 
-    async def get_hashed_password(self, email: str) -> str | None:
-        result = await self.session.execute(
-            select(Users.hashed_password).filter_by(email=email)
-        )
-        return result.scalar_one_or_none()
-
     async def find_one_or_none(self, **filter_by) -> User | None:
         result = await self.session.execute(
             select(Users).filter_by(**filter_by)
@@ -108,3 +102,11 @@ class SQLSubscribeRepository(ModelBaseRepository[Subscribes]):
         await self.session.execute(
             delete(Subscribes).where(Subscribes.id == subscribe_id)
         )
+
+    async def get_hashed_password(self, email: str) -> str | None:
+        from sqlalchemy import select
+        from app.infrastructure.database.orm.models import Users
+        result = await self.session.execute(
+            select(Users.hashed_password).filter_by(email=email)
+        )
+        return result.scalar_one_or_none()

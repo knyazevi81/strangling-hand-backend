@@ -25,11 +25,11 @@ class SecSettings(BaseSettings):
 
 
 class ProjectSettings(BaseSettings):
-    PROJECT_TITLE: str = "vpn-access-service"
+    PROJECT_TITLE: str = "savebit"
     PROJECT_DESCRIPTION: str = """
-    Сервис управления VPN доступами
+    Savebit — сервис управления подключениями
     """
-    BASE_PATH: str = "/vpn-service/"
+    BASE_PATH: str = "/savebit/"
 
 
 class DataBaseSettings(BaseSettings):
@@ -42,6 +42,15 @@ class DataBaseSettings(BaseSettings):
     @property
     def database_url(self) -> str:
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
+
+class EmailSettings(BaseSettings):
+    SMTP_HOST: str = "smtp.timeweb.ru"
+    SMTP_PORT: int = 465
+    SMTP_USER: str = "admin@savebit.ru"
+    SMTP_PASS: str
+    EMAIL_FROM: str = "Savebit <admin@savebit.ru>"
+    EMAIL_ENABLED: bool = True
 
 
 class LoggingSettings(BaseSettings):
@@ -57,6 +66,7 @@ class LoggingSettings(BaseSettings):
 class Settings(
     DataBaseSettings,
     ProjectSettings,
+    EmailSettings,
     LoggingSettings,
     SecSettings,
 ):

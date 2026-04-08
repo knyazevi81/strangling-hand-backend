@@ -38,8 +38,13 @@ class UsersListResponse(BaseModel):
     total: int
 
 
-class ChangePasswordRequest(BaseModel):
+class AdminChangePasswordRequest(BaseModel):
     user_id: uuid.UUID
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+class ChangeMyPasswordRequest(BaseModel):
+    old_password: str
     new_password: str = Field(min_length=8, max_length=128)
 
 
@@ -50,7 +55,7 @@ class SubscribeResponse(BaseModel):
     user_id: uuid.UUID
     ip: str
     port: str
-    payload: str  # payload с подставленными ip и port
+    payload: str
 
 
 class SubscribesListResponse(BaseModel):
@@ -62,11 +67,9 @@ class CreateSubscribeRequest(BaseModel):
     user_id: uuid.UUID
     ip: str
     port: str
-    # payload — шаблон, {ip} и {port} будут подставлены автоматически
-    # пример: vless://uuid@{ip}:{port}?security=reality&...#rkn-pidarasi-leo-wl
     payload_template: str = Field(
-        description="VLESS payload template with {ip} and {port} placeholders",
-        examples=["vless://60975a6b-8eb9-413a-b555-7a9e024083d8@{ip}:{port}?security=reality&sni=max.ru&fp=chrome&pbk=7jQJYJL6CuVXCyUsMHLxrAKLvyNs6OPEuWcKNYyltk8&sid=c66fc3a3&spx=/&type=tcp&flow=xtls-rprx-vision&encryption=none#rkn-pidarasi-leo-wl"]
+        description="Шаблон с {ip} и {port} плейсхолдерами",
+        examples=["vless://uuid@{ip}:{port}?security=reality&sni=max.ru&...#savebit"]
     )
 
 
@@ -75,6 +78,26 @@ class UpdateSubscribeRequest(BaseModel):
     port: str | None = None
     payload_template: str | None = None
 
+
+# ── Notifications ──────────────────────────────────────────────────────────────
+
+class SendToAllRequest(BaseModel):
+    subject: str = Field(min_length=1, max_length=200)
+    message: str = Field(min_length=1, max_length=5000)
+
+
+class SendToUserRequest(BaseModel):
+    user_id: uuid.UUID
+    subject: str = Field(min_length=1, max_length=200)
+    message: str = Field(min_length=1, max_length=5000)
+
+
+class NotificationSentResponse(BaseModel):
+    sent_to: int
+    message: str
+
+
+# ── Common ────────────────────────────────────────────────────────────────────
 
 class MessageResponse(BaseModel):
     message: str

@@ -8,6 +8,7 @@ from app.infrastructure.database.uow import UnitOfWork
 from app.infrastructure.config.config import get_settings, Settings
 from app.infrastructure.security.jwt import JoseTokenService
 from app.infrastructure.security.password import BcryptPasswordHasher
+from app.infrastructure.email.service import EmailService
 from app.application.use_cases.auth import AuthService
 from app.application.use_cases.users import UserService
 from app.application.use_cases.subscribes import SubscribeService
@@ -27,6 +28,12 @@ def get_token_service(
     return JoseTokenService(settings)
 
 
+def get_email_service(
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> EmailService:
+    return EmailService(settings)
+
+
 def get_auth_service(
     uow: Annotated[UnitOfWork, Depends(get_uow)],
     password_hasher: Annotated[BcryptPasswordHasher, Depends(get_password_hasher)],
@@ -38,14 +45,16 @@ def get_auth_service(
 def get_user_service(
     uow: Annotated[UnitOfWork, Depends(get_uow)],
     password_hasher: Annotated[BcryptPasswordHasher, Depends(get_password_hasher)],
+    email_service: Annotated[EmailService, Depends(get_email_service)],
 ) -> UserService:
-    return UserService(uow, password_hasher)
+    return UserService(uow, password_hasher, email_service)
 
 
 def get_subscribe_service(
     uow: Annotated[UnitOfWork, Depends(get_uow)],
+    email_service: Annotated[EmailService, Depends(get_email_service)],
 ) -> SubscribeService:
-    return SubscribeService(uow)
+    return SubscribeService(uow, email_service)
 
 
 async def get_current_user(
