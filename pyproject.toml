@@ -12,6 +12,7 @@ dependencies = [
     "prometheus-fastapi-instrumentator>=7.1.0",
     "pwdlib[bcrypt]>=0.3.0",
     "pydantic-settings>=2.13.1",
+    "pydantic[email]>=2.12.5",
     "pygelf>=0.4.3",
     "python-jose[cryptography]>=3.5.0",
     "sqlalchemy>=2.0.49",
