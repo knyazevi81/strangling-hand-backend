@@ -1,0 +1,68 @@
+services:
+  # rabbitmq:
+  #   image: nexus.sogaz.ru/rabbitmq:4-management
+  #   container_name: rabbitmq
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #   restart: unless-stopped
+  #   networks:
+  #     - shared-msbrenot-network
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - "../.env"
+    volumes:
+      - "..:/app"
+    # depends_on:
+    #   - rabbitmq
+    networks:
+      - shared-msbrenot-network
+  postgres:
+    image: postgres:latest
+    container_name: psgr
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - ../data:/docker-entrypoint-initdb.d
+      - under-msbre-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}", ]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shared-msbrenot-network
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    links:
+      - postgres:db
+    depends_on:
+      - postgres
+    networks:
+      - shared-msbrenot-network
+
+volumes:
+  under-msbre-data:
+
+networks:
+  shared-msbrenot-network:
+    driver: bridge
+    name: shared-msbrenot-network
