@@ -1,18 +1,18 @@
 [project]
 name = "strangling-hand-backend"
-version = "0.1.0"
-description = "админка от удушений"
+version = "0.2.0"
+description = "vpn access management service"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
     "fastapi>=0.135.3",
-    "passlib[bcrypt]>=1.7.4",
     "prometheus-fastapi-instrumentator>=7.1.0",
-    "pwdlib>=0.3.0",
+    "pwdlib[bcrypt]>=0.3.0",
     "pydantic-settings>=2.13.1",
     "pygelf>=0.4.3",
     "python-jose[cryptography]>=3.5.0",
     "sqlalchemy>=2.0.49",
+    "uvicorn[standard]>=0.35.0",
 ]

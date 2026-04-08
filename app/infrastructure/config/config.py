@@ -1,11 +1,9 @@
-from pydantic_settings import BaseSettings
-from pydantic import AnyUrl, SecretStr, field_validator
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 from functools import lru_cache
-import uuid
 import logging
+
 
 class SecSettings(BaseSettings):
     # ── JWT ────────────────────────────────────────────────────────────────
@@ -25,52 +23,50 @@ class SecSettings(BaseSettings):
             raise ValueError(f"JWT algorithm must be one of {allowed}")
         return v
 
-class ProjectSettings(BaseSettings):
-    PROJECT_TITLE: str = "kill-hand-service"
-    PROJECT_DESCRIPTION: str =  """
-    Сервис
-    """
-    BASE_PATH: str = "/notifications-service/"
 
-class EmailSettings(BaseSettings):
-    SMTP_HOST: str
-    SMTP_PORT: int
-    SMTP_PASS: str
-    SMTP_USER: str
-    EMAIL_CHANNEL_ID: uuid.UUID
-    EMAIL_FROM: str
-    
-    
+class ProjectSettings(BaseSettings):
+    PROJECT_TITLE: str = "vpn-access-service"
+    PROJECT_DESCRIPTION: str = """
+    Сервис управления VPN доступами
+    """
+    BASE_PATH: str = "/vpn-service/"
+
+
 class DataBaseSettings(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASS: str
     DB_HOST: str
     DB_PORT: str
-    
+
     @property
     def database_url(self) -> str:
-       return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}" 
+        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
 
 class LoggingSettings(BaseSettings):
     LOGGING_FORMAT: str = "%(asctime)s | %(levelname)s | %(name)s %(message)s"
-    LOGGING_DATEFMT: str = "%Y-%m-d %H:%M:S"
+    LOGGING_DATEFMT: str = "%Y-%m-%d %H:%M:%S"
     LOG_LEVEL: int = logging.INFO
-    
+
     GRAYLOG_ENABLED: bool = False
     GRAYLOG_HOST: str | None = None
     GRAYLOG_PORT: int | None = None
 
+
 class Settings(
-    DataBaseSettings, 
-    ProjectSettings, 
-    EmailSettings,
+    DataBaseSettings,
+    ProjectSettings,
     LoggingSettings,
-    SecSettings
+    SecSettings,
 ):
-    ...
-    
-    
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+
 @lru_cache
-def get_settings():
+def get_settings() -> Settings:
     return Settings()

@@ -1,18 +1,4 @@
 services:
-  # rabbitmq:
-  #   image: nexus.sogaz.ru/rabbitmq:4-management
-  #   container_name: rabbitmq
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: admin
-  #     RABBITMQ_DEFAULT_PASS: admin
-  #   volumes:
-  #     - rabbitmq_data:/var/lib/rabbitmq
-  #   restart: unless-stopped
-  #   networks:
-  #     - shared-msbrenot-network
   backend:
     build:
       context: ..
@@ -24,12 +10,14 @@ services:
       - "../.env"
     volumes:
       - "..:/app"
-    # depends_on:
-    #   - rabbitmq
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
-      - shared-msbrenot-network
+      - shared-vpn-network
+
   postgres:
-    image: postgres:latest
+    image: postgres:16-alpine
     container_name: psgr
     ports:
       - "5432:5432"
@@ -38,15 +26,15 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
     volumes:
-      - ../data:/docker-entrypoint-initdb.d
-      - under-msbre-data:/var/lib/postgresql
+      - under-vpn-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}", ]
-      interval: 20s
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - shared-msbrenot-network
+      - shared-vpn-network
+
   adminer:
     image: adminer
     container_name: adminer
@@ -57,12 +45,12 @@ services:
     depends_on:
       - postgres
     networks:
-      - shared-msbrenot-network
+      - shared-vpn-network
 
 volumes:
-  under-msbre-data:
+  under-vpn-data:
 
 networks:
-  shared-msbrenot-network:
+  shared-vpn-network:
     driver: bridge
-    name: shared-msbrenot-network
+    name: shared-vpn-network

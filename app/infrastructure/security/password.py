@@ -1,9 +1,3 @@
-"""
-Security — password hashing.
-
-Port (abstract) + Adapter (pwdlib — modern passlib replacement).
-Uses bcrypt by default; argon2 is also available via pwdlib.
-"""
 from abc import ABC, abstractmethod
 
 from pwdlib import PasswordHash
@@ -19,7 +13,7 @@ class AbstractPasswordHasher(ABC):
 
 
 class BcryptPasswordHasher(AbstractPasswordHasher):
-    """bcrypt via pwdlib — actively maintained, Python 3.12 compatible."""
+    """bcrypt via pwdlib — actively maintained, Python 3.12+ compatible."""
 
     def __init__(self) -> None:
         self._ph = PasswordHash((BcryptHasher(),))

@@ -1,19 +1,12 @@
-"""
-Security — JWT token service.
-
-Port (abstract) + Adapter (python-jose).
-"""
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from datetime import datetime, timedelta, timezone
 
 from jose import JWTError, jwt
 
-from app.config import Settings
-from app.domain.auth.tokens import TokenPair, TokenPayload, TokenType
-from app.domain.user.exceptions import InvalidCredentialsError
-
+from app.infrastructure.config.config import Settings
+from app.domain.models.models import TokenPair, TokenPayload, TokenType
+from app.domain.exceptions.base import InvalidCredentialsError
 from app.domain.interface.token import AbstractTokenService
 
 

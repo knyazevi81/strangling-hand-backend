@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 
+
 class LoggerPort(ABC):
 
     @abstractmethod
