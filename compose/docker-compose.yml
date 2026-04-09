@@ -17,7 +17,7 @@ services:
       - shared-vpn-network
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: nginx_api
     restart: always
     ports:
       - "80:80"
