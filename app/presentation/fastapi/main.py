@@ -12,6 +12,7 @@ from app.presentation.fastapi.middleware.request_id import RequestIdMiddleware
 from app.presentation.fastapi.routers.auth import router as auth_router
 from app.presentation.fastapi.routers.users import router as users_router
 from app.presentation.fastapi.routers.subscribes import router as subscribes_router
+from app.presentation.fastapi.routers.free_vpn import router as free_vpn_router
 
 config = get_settings()
 logger = get_logger(__name__)
@@ -47,6 +48,7 @@ def create_application() -> FastAPI:
     _app.include_router(auth_router, prefix="/api/v1")
     _app.include_router(users_router, prefix="/api/v1")
     _app.include_router(subscribes_router, prefix="/api/v1")
+    _app.include_router(free_vpn_router, prefix="/api/v1")
 
     return _app
 
