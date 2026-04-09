@@ -84,7 +84,7 @@ class EmailService:
           Ваш аккаунт в Savebit был активирован администратором.<br>
           Теперь вы можете войти и просматривать свои подключения.
         </p>
-        <a href="#" style="display:inline-block;background:#185FA5;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;">Войти в Savebit</a>
+        <a href="https://net.savebit.ru" style="display:inline-block;background:#185FA5;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;">Войти в Savebit</a>
         """
         await self.send(to, "Ваш аккаунт активирован — Savebit", _build_html("Аккаунт активирован", body))
 
