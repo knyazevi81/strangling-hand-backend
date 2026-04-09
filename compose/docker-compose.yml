@@ -15,22 +15,21 @@ services:
         condition: service_healthy
     networks:
       - shared-vpn-network
-  nginx_api:
-    image: nginx:latest
-    container_name: nginx_api
-    restart: always
-    ports:
-      - "8081:80"
-      - "8443:443"
-    volumes:
-      - ../nginx/conf.d:/etc/nginx/conf.d
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
-    depends_on:
-      - backend
-    networks:
-      - shared-vpn-network
-
+  # nginx_api:
+  #   image: nginx:latest
+  #   container_name: nginx_api
+  #   restart: always
+  #   ports:
+  #     - "8081:80"
+  #     - "8443:443"
+  #   volumes:
+  #     - ../nginx/conf.d:/etc/nginx/conf.d
+  #     - ./certbot/www:/var/www/certbot
+  #     - ./certbot/conf:/etc/letsencrypt
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - shared-vpn-network
   postgres:
     image: postgres:16-alpine
     container_name: psgr
