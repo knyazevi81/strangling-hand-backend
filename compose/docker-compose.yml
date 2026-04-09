@@ -20,7 +20,7 @@ services:
     container_name: nginx_api
     restart: always
     ports:
-      - "8080:80"
+      - "8081:80"
       - "8443:443"
     volumes:
       - ../nginx/conf.d:/etc/nginx/conf.d
