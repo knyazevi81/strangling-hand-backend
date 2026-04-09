@@ -57,6 +57,14 @@ class SQLUserRepository(ModelBaseRepository[Users]):
         )
 
 
+
+    async def get_hashed_password(self, email: str) -> str | None:
+        from sqlalchemy import select
+        from app.infrastructure.database.orm.models import Users
+        result = await self.session.execute(
+            select(Users.hashed_password).filter_by(email=email)
+        )
+        return result.scalar_one_or_none()
 class SQLSubscribeRepository(ModelBaseRepository[Subscribes]):
 
     def __init__(self, session: AsyncSession):
