@@ -41,3 +41,11 @@ class UnitOfWorkFactory:
     async def __aexit__(self, *args):
         await self._uow.__aexit__(*args)
         await self._session.__aexit__(*args)
+
+
+class UnitOfWorkWithArticles(UnitOfWork):
+    async def __aenter__(self):
+        await super().__aenter__()
+        from app.infrastructure.database.repositories.articles import SQLArticleRepository
+        self.articles = SQLArticleRepository(self.session)
+        return self

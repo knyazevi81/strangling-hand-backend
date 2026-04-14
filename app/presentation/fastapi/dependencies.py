@@ -64,3 +64,13 @@ async def get_current_user(
     if credentials is None:
         raise NotAuthenticatedError()
     return await auth_service.get_current_user(credentials.credentials)
+
+
+async def get_uow_with_articles(
+    session=Depends(lambda: None),
+):
+    from app.infrastructure.database.engine import async_session_maker
+    from app.infrastructure.database.uow import UnitOfWorkWithArticles
+    async with async_session_maker() as s:
+        async with UnitOfWorkWithArticles(s) as uow:
+            yield uow
