@@ -45,6 +45,7 @@ class ExceptionMiddleware:
             await response(scope, receive, send)
 
         except Exception as exc:
+            import traceback; traceback.print_exc()
             self._logger.error(
                 "Unhandled exception",
                 error=str(exc),

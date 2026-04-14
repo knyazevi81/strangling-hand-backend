@@ -101,7 +101,6 @@ async def upload_image(
 @router.get("/images/{image_id}")
 async def get_image(
     image_id: uuid.UUID,
-    current_user: Annotated[User, Depends(get_current_user)],
     service: Annotated[ArticleService, Depends(get_article_service)],
 ) -> Response:
     data, mime_type = await service.get_image(image_id)

@@ -50,6 +50,8 @@ class SQLArticleRepository(ModelBaseRepository[Articles]):
         return result.scalar_one()
 
     async def update_article(self, article_id: uuid.UUID, **data) -> None:
+        from datetime import datetime, timezone
+        data["updated_at"] = datetime.now()
         await self.session.execute(
             update(Articles).where(Articles.id == article_id).values(**data)
         )

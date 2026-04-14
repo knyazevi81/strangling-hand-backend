@@ -10,7 +10,7 @@ from app.domain.exceptions.base import AppException, ForbiddenError
 
 def _strip_markdown(text: str) -> str:
     text = re.sub(r'!\[.*?\]\(.*?\)', '', text)
-    text = re.sub(r'\[.*?\]\(.*?\)', r'\1', text)
+    text = re.sub(r'\[([^\]]*)\]\([^)]*\)', lambda m: m.group(1), text)
     text = re.sub(r'#{1,6}\s*', '', text)
     text = re.sub(r'[*_`~>]+', '', text)
     text = re.sub(r'\s+', ' ', text)
