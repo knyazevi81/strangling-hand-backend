@@ -14,6 +14,7 @@ from app.presentation.fastapi.routers.articles import router as articles_router
 from app.presentation.fastapi.routers.users import router as users_router
 from app.presentation.fastapi.routers.subscribes import router as subscribes_router
 from app.presentation.fastapi.routers.free_vpn import router as free_vpn_router
+from app.presentation.fastapi.routers.ping import router as ping_router
 
 config = get_settings()
 logger = get_logger(__name__)
@@ -51,6 +52,7 @@ def create_application() -> FastAPI:
     _app.include_router(subscribes_router, prefix="/api/v1")
     _app.include_router(articles_router, prefix="/api/v1")
     _app.include_router(free_vpn_router, prefix="/api/v1")
+    _app.include_router(ping_router, prefix="/api/v1")
 
     return _app
 
