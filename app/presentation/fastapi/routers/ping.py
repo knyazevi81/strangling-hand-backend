@@ -31,7 +31,7 @@ async def _get_user_from_token(token: str, uow: UnitOfWork, settings: Settings) 
     return await auth_service.get_current_user(token)
 
 
-@router.websocket("/ws")
+@router.websocket("/ping/ws")
 async def ping_ws(websocket: WebSocket) -> None:
     """
     WebSocket прокси для пинга личных подключений пользователя.
