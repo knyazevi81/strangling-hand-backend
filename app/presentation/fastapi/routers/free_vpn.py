@@ -13,8 +13,8 @@ from app.presentation.fastapi.dependencies import get_current_user
 router = APIRouter(prefix="/free-vpn", tags=["free-vpn"])
 
 SOURCE_URL = (
-    "https://raw.githubusercontent.com/kort0881/vpn-vless-configs-russia"
-    "/refs/heads/main/githubmirror/ru-sni-local/vless.txt"
+    "https://raw.githubusercontent.com/igareck"
+    "/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-checked.txt"
 )
 
 
