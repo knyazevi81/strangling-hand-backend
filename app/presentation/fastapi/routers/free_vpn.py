@@ -23,6 +23,8 @@ def _is_valid(line: str) -> bool:
     line = line.strip()
     if not line.startswith("vless://"):
         return False
+    if "IPv6" in line:
+        return False
     try:
         parsed = urlparse(line)
         params = parse_qs(parsed.query)
